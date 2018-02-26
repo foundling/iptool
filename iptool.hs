@@ -1,7 +1,7 @@
 import Data.Char
 
 notDot :: Char -> Bool
-notDot = (/=) '.'
+notDot = (/= '.')
 
 charsToDigit :: [Char] -> [Int]
 charsToDigit = map digitToInt 
@@ -14,6 +14,18 @@ digitsToDecimal digits = sum $ map pairProduct $ zip reversedDigits powersOfTen
     where 
         reversedDigits = reverse digits
         powersOfTen = iterate (*10) 1
+
+
+-- replace octets with this, reorganize names and conversions of string to int
+parseOctetStrings :: String -> [String]
+parseOctetStrings [] = []
+parseOctetStrings xs = [takeWhile notDot xs] ++ (octets rest)
+    where
+        nextOctet = dropWhile notDot xs 
+        rest = if (length nextOctet) > 0  
+                then (tail nextOctet)
+                else []
+
 
 octets :: String -> [Int]
 octets [] = []
@@ -50,3 +62,10 @@ gateway ip networkSize = map pairProduct $ zip (toBits ip) (bitmask networkSize 
 
 hostNumber :: String -> Int  -> Int
 hostNumber ip networkSize = binToDec $ map pairProduct $ zip (toBits ip) (bitmask networkSize 0)  
+
+fn :: String -> String
+fn s = s ++ "!"
+
+main = do
+    interact fn
+
