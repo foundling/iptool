@@ -2,13 +2,6 @@ import Data.Char
 import Data.List
 import Data.Bits
 
--- Test Values --
-ip :: [Char]
-ip = "192.168.2.8"
-
-netmask :: [Char]
-netmask = "24"
-
 -- Utils --
 
 pairProduct :: (Int, Int) -> Int
@@ -55,13 +48,13 @@ ipToBits ip = concat $ map (makeByte . decToBits) (map stoi (parseOctets ip))
 
 --- Netmask ----
 
-intToNetmask :: Int -> [Int] 
-intToNetmask nm = bitmask 1 nm
+netmask :: Int -> [Int] 
+netmask n = bitmask 1 n 
 
 -- Wildcard --
 -- Network --
 network :: [Int] -> Int -> [Int]
-network ip netmask = bitmask 1 netmask
+network ipBits netmask = map (\ (a,b) -> (.&.) a b) (zip ipBits (bitmask 1 netmask)) 
 -- Broadcast --
 -- HostMin --
 -- HostMax --
